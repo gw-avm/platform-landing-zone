@@ -71,8 +71,10 @@ custom_replacements = {
     connectivity_hub_primary_resource_group_name = "rg-connectivity-hub-prod-$${starter_location_01}-001"
     dns_resource_group_name                      = "rg-connectivity-dns-prod-$${starter_location_01}-001"
     ddos_resource_group_name                     = "rg-connectivity-ddos-prod-$${starter_location_01}-001"
-    asc_export_resource_group_name               = "rg-security-mdfcexport-prod-$${starter_location_01}-001"
-    service_health_alerts_resource_group_name    = "rg-management-servicehealth-prod-$${starter_location_01}-001"
+    # Policy creates these two in every subscription under alz with the same
+    # name, so they carry no workload or environment.
+    asc_export_resource_group_name            = "rg-mdfcexport-$${starter_location_01}-001"
+    service_health_alerts_resource_group_name = "rg-servicehealth-$${starter_location_01}-001"
 
     # Resource names management
     log_analytics_workspace_name            = "log-management-prod-$${starter_location_01}-001"
