@@ -229,7 +229,16 @@ management_group_settings = {
             enableAscForOssDb                           = "Disabled"
             enableAscForCosmosDbs                       = "Disabled"
             enableAscForCspm                            = "Disabled"
+            enableAscForAI                              = "Disabled"
           }
+        }
+        # These enable paid Defender for SQL / open-source DBs on each database
+        # server. DoNotEnforce keeps the compliance report without deploying them.
+        Deploy-MDFC-SqlAtp = {
+          enforcement_mode = "DoNotEnforce"
+        }
+        Deploy-MDFC-OssDb = {
+          enforcement_mode = "DoNotEnforce"
         }
       }
     }
@@ -314,6 +323,9 @@ hub_virtual_networks = {
     location                  = "$${starter_location_01}"
     default_parent_id         = "$${primary_connectivity_resource_group_id}"
     default_hub_address_space = "$${primary_hub_address_space}"
+    hub_virtual_network = {
+      name = "vnet-connectivity-hub-prod-$${starter_location_01}-001"
+    }
     enabled_resources = {
       firewall                              = "$${primary_firewall_enabled}"
       bastion                               = "$${primary_bastion_enabled}"
