@@ -242,6 +242,22 @@ management_group_settings = {
         Deploy-MDFC-OssDb = {
           enforcement_mode = "DoNotEnforce"
         }
+        # The default action group only notifies subscription Owners, which
+        # here is terraform-admin with no mailbox. The whole object is replaced,
+        # so the unused receivers stay as empty values.
+        Deploy-SvcHealth-BuiltIn = {
+          parameters = {
+            actionGroupResources = {
+              actionGroupEmail    = ["$${defender_email_security_contact}"]
+              eventHubResourceId  = []
+              functionResourceId  = ""
+              functionTriggerUrl  = ""
+              logicappCallbackUrl = ""
+              logicappResourceId  = ""
+              webhookServiceUri   = []
+            }
+          }
+        }
       }
     }
     connectivity = {
