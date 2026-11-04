@@ -42,9 +42,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-      # Warnings are reported; only errors fail the check.
+      # Warnings are reported; only errors fail the check. TFLint doesn't
+      # auto-load terraform.tfvars.json (it holds subscription_ids).
       - name: TFLint
-        run: tflint --format compact --minimum-failure-severity=error
+        run: tflint --format compact --minimum-failure-severity=error --var-file=terraform.tfvars.json
 
   checkov:
     name: Checkov
@@ -56,6 +57,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # Scans this repo's code only. The AVM modules are Microsoft's, and
+      # scanning them reports resources that aren't deployed (firewall, vWAN).
       # soft_fail until the first results have been triaged; findings appear
       # in the run log and under Security > Code scanning.
       - name: Checkov
@@ -63,7 +66,7 @@ jobs:
         with:
           directory: .
           framework: terraform
-          download_external_modules: true
+          download_external_modules: false
           soft_fail: true
           output_format: cli,sarif
           output_file_path: console,results.sarif
