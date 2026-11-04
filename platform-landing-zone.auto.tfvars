@@ -145,7 +145,11 @@ management_resources_enabled = true
 management_resource_settings = {
   location                     = "$${starter_location_01}"
   log_analytics_workspace_name = "$${log_analytics_workspace_name}"
-  resource_group_name          = "$${management_resource_group_name}"
+  # Cost guardrail: ingestion stops for the rest of the day at 0.5 GB
+  # (normal use is a few MB/day). Hitting it drops logs, so raise it before
+  # onboarding real workloads (ISO 27001 A.8.15).
+  log_analytics_workspace_daily_quota_gb = 0.5
+  resource_group_name                    = "$${management_resource_group_name}"
   user_assigned_managed_identities = {
     ama = {
       name = "$${ama_user_assigned_managed_identity_name}"
