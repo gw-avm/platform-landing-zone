@@ -122,9 +122,18 @@ custom_replacements = {
 --- Tags ---
 This variable can be used to apply tags to all resources that support it. Some resources allow overriding these tags.
 */
+# CAF tagging (learn.microsoft.com/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging):
+# lowercase keys, consistent lowercase values, no personal or sensitive data.
 tags = {
-  deployed_by = "terraform"
-  source      = "Azure Landing Zones Accelerator"
+  app             = "platform-landing-zone"
+  env             = "prod"
+  region          = "$${starter_location_01}"
+  criticality     = "mission-critical"
+  confidentiality = "private"
+  businessunit    = "shared"
+  opsteam         = "platform"
+  repo            = "https://github.com/gw-avm/platform-landing-zone"
+  deployed_by     = "terraform"
 }
 
 /*
