@@ -58,7 +58,7 @@ custom_replacements = {
     primary_firewall_sku_tier                             = "Basic"
     primary_virtual_network_gateway_express_route_enabled = false
     primary_virtual_network_gateway_vpn_enabled           = false
-    primary_private_dns_zones_enabled                     = false
+    primary_private_dns_zones_enabled                     = true # only the zones listed under hub_virtual_networks
     primary_private_dns_auto_registration_zone_enabled    = false
     primary_private_dns_resolver_enabled                  = false
     primary_bastion_enabled                               = false
@@ -373,6 +373,24 @@ hub_virtual_networks = {
     }
     private_dns_zones = {
       parent_id = "$${dns_resource_group_id}"
+
+      # Only the zones the landing zones use, instead of the default 60-odd.
+      private_link_private_dns_zones = {
+        postgres = {
+          zone_name = "privatelink.postgres.database.azure.com"
+        }
+      }
+
+      # The hub is linked by default. Spokes use Azure DNS directly (there's
+      # no DNS resolver in the hub), so each spoke needs its own link.
+      virtual_network_link_additional_virtual_networks = {
+        apps_nonprod = {
+          virtual_network_resource_id = "/subscriptions/99ebe116-0532-43e3-bcf3-7a0b2a77bbcc/resourceGroups/rg-apps-network-nonprod-eastasia-001/providers/Microsoft.Network/virtualNetworks/vnet-apps-nonprod-eastasia-001"
+        }
+        apps_prod = {
+          virtual_network_resource_id = "/subscriptions/89181bf2-9993-4138-8dd4-ccc27dc7250f/resourceGroups/rg-apps-network-prod-eastasia-001/providers/Microsoft.Network/virtualNetworks/vnet-apps-prod-eastasia-001"
+        }
+      }
     }
   }
 }
