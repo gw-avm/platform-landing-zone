@@ -374,6 +374,9 @@ hub_virtual_networks = {
     private_dns_zones = {
       parent_id = "$${dns_resource_group_id}"
 
+      # The module defaults this to true; pass the starter's setting through.
+      auto_registration_zone_enabled = "$${primary_private_dns_auto_registration_zone_enabled}"
+
       # Only the zones the landing zones use, instead of the default 60-odd.
       private_link_private_dns_zones = {
         postgres = {
