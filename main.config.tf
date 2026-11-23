@@ -9,7 +9,7 @@ module "config" {
   subscription_id_security        = try(var.subscription_ids["security"], "")
   root_parent_management_group_id = var.root_parent_management_group_id
 
-  custom_replacements = var.custom_replacements
+  custom_replacements = local.custom_replacements
 
   inputs = {
     connectivity_resource_groups    = var.connectivity_resource_groups
@@ -24,4 +24,16 @@ module "config" {
   }
 
   enable_telemetry = var.enable_telemetry
+}
+
+# Values kept out of this public repo. The pipeline sets them from secrets
+# (TF_VAR_*), and they're merged into the custom names used in the tfvars.
+locals {
+  custom_replacements = merge(var.custom_replacements, {
+    names = merge(var.custom_replacements.names, {
+      defender_email_security_contact = var.security_contact_email
+      apps_nonprod_virtual_network_id = "/subscriptions/${var.app_subscription_ids["nonprod"]}/resourceGroups/rg-apps-network-nonprod-$${starter_location_01}-001/providers/Microsoft.Network/virtualNetworks/vnet-apps-nonprod-$${starter_location_01}-001"
+      apps_prod_virtual_network_id    = "/subscriptions/${var.app_subscription_ids["prod"]}/resourceGroups/rg-apps-network-prod-$${starter_location_01}-001/providers/Microsoft.Network/virtualNetworks/vnet-apps-prod-$${starter_location_01}-001"
+    })
+  })
 }

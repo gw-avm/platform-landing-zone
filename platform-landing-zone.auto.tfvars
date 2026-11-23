@@ -34,8 +34,10 @@ custom_replacements = {
   NOTE: You cannot refer to another custom name in this variable.
   */
   names = {
+    # defender_email_security_contact, apps_nonprod_virtual_network_id and
+    # apps_prod_virtual_network_id are added in main.config.tf from variables
+    # set by the pipeline from secrets, so they're not in this public repo.
     # Defender email security contact
-    defender_email_security_contact = "graemewales13@gmail.com"
 
     # Resource provisioning global connectivity
     #
@@ -388,10 +390,10 @@ hub_virtual_networks = {
       # no DNS resolver in the hub), so each spoke needs its own link.
       virtual_network_link_additional_virtual_networks = {
         apps_nonprod = {
-          virtual_network_resource_id = "/subscriptions/99ebe116-0532-43e3-bcf3-7a0b2a77bbcc/resourceGroups/rg-apps-network-nonprod-eastasia-001/providers/Microsoft.Network/virtualNetworks/vnet-apps-nonprod-eastasia-001"
+          virtual_network_resource_id = "$${apps_nonprod_virtual_network_id}"
         }
         apps_prod = {
-          virtual_network_resource_id = "/subscriptions/89181bf2-9993-4138-8dd4-ccc27dc7250f/resourceGroups/rg-apps-network-prod-eastasia-001/providers/Microsoft.Network/virtualNetworks/vnet-apps-prod-eastasia-001"
+          virtual_network_resource_id = "$${apps_prod_virtual_network_id}"
         }
       }
     }

@@ -43,9 +43,16 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       # Warnings are reported; only errors fail the check. TFLint doesn't
-      # auto-load terraform.tfvars.json (it holds subscription_ids).
+      # auto-load terraform.tfvars.json. The subscription IDs and contact email
+      # are secrets that this workflow never sees, so placeholders stand in.
       - name: TFLint
-        run: tflint --format compact --minimum-failure-severity=error --var-file=terraform.tfvars.json
+        run: |
+          zero=00000000-0000-0000-0000-000000000000
+          tflint --format compact --minimum-failure-severity=error \
+            --var-file=terraform.tfvars.json \
+            --var "subscription_ids={management=\"$zero\", connectivity=\"$zero\"}" \
+            --var "app_subscription_ids={nonprod=\"$zero\", prod=\"$zero\"}" \
+            --var "security_contact_email=placeholder@example.com"
 
   checkov:
     name: Checkov
