@@ -106,3 +106,20 @@ telemetry_additional_content = {
 }
 DESCRIPTION
 }
+
+variable "security_contact_email" {
+  description = "Defender security contact and service health alert email. Set by the pipeline from the SECURITY_CONTACT_EMAIL secret."
+  type        = string
+  nullable    = false
+}
+
+variable "app_subscription_ids" {
+  description = "Subscription IDs of the app landing zones whose spokes link to the central private DNS zones (keys nonprod and prod). Set by the pipeline from secrets."
+  type        = map(string)
+  nullable    = false
+
+  validation {
+    condition     = alltrue([for k in ["nonprod", "prod"] : can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", lookup(var.app_subscription_ids, k, "")))])
+    error_message = "app_subscription_ids needs a subscription ID for nonprod and prod."
+  }
+}

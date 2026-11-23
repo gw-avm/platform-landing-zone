@@ -23,6 +23,7 @@ on:
 jobs:
   plan_and_apply:
     uses: gw-avm/platform-landing-zone-templates/.github/workflows/cd-template.yaml@main
+    secrets: inherit
     name: 'CD'
     permissions:
       id-token: write

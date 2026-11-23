@@ -15,6 +15,7 @@ on:
 jobs:
   validate_and_plan:
     uses: gw-avm/platform-landing-zone-templates/.github/workflows/ci-template.yaml@main
+    secrets: inherit
     name: 'CI'
     permissions:
       id-token: write
